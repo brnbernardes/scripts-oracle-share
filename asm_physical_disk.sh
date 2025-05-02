@@ -1,7 +1,17 @@
 #!/bin/bash
-## ASMLIB_DISK  -- disk name in ASMLIB
-## ASM_DISK -- disk name in ASM
-## DEVICE -- physical disk name
+##############################################################################
+# Nome: asm_physical_disk.sh
+# Descrição: Identifica os discos 
+#            
+# Autor: DBA Bruno Bernardes
+# Versão: 1.0
+# Data: 2025-04-25
+# Uso: Execute como root -> sh asm_physical_disk.sh [parametro]
+# Varibables:
+# - ASMLIB_DISK: disk name in ASMLIB
+# - ASM_DISK: disk name in ASM
+# - DEVICE: physical disk name
+##############################################################################
 if [ -z "$GRID_HOME" ]; then
  GRID_HOME=`cat /etc/oratab  | grep ^+ASM | awk -F":" '{print $2}'`
 fi
