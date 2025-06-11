@@ -7,7 +7,7 @@
 -- | Modificacao: V1.0 - 07/01/2021 - rfsobrinho - GUINA                        |
 -- |            :                                                               |
 -- +----------------------------------------------------------------------------+
--- |kill -9 $(ps -ef | grep -v grep | grep 'LOCAL=NO' | grep PPXBBKS | awk '{print $2}')
+-- |kill -9 $(ps -ef | grep -v grep | grep 'LOCAL=NO' | grep $(ORACLE_SID) | awk '{print $2}')
 -- |http://www.juliandyke.com/Diagnostics/Tools/ORADEBUG/ORADEBUG.php
 -- +----------------------------------------------------------------------------+
 SET TERMOUT OFF;
