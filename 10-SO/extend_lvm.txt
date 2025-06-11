@@ -1,0 +1,377 @@
+brnbe@DESKTOP-0AGJP83 
+
+[thema@oracledbhml ~]$ sudo su -
+[sudo] password for thema:
+Last login: Thu Mar 28 09:33:51 -05 2024 on pts/1
+
+[root@oracledbhml ~]# df -h
+Filesystem              Size  Used Avail Use% Mounted on
+devtmpfs                7.7G     0  7.7G   0% /dev
+tmpfs                   7.8G     0  7.8G   0% /dev/shm
+tmpfs                   7.8G   50M  7.7G   1% /run
+tmpfs                   7.8G     0  7.8G   0% /sys/fs/cgroup
+/dev/mapper/ol-root      28G  7.1G   21G  26% /
+/dev/sda1              1014M  172M  843M  17% /boot
+/dev/mapper/guo01-home  160G  133G   28G  83% /u01
+tmpfs                   1.6G     0  1.6G   0% /run/user/54321
+tmpfs                   1.6G     0  1.6G   0% /run/user/1000
+tmpfs                   1.6G     0  1.6G   0% /run/user/1001
+[root@oracledbhml ~]# lsblk
+NAME           MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sda              8:0    0   50G  0 disk
++-sda1           8:1    0    1G  0 part /boot
++-sda2           8:2    0   49G  0 part
+  +-ol-root    249:0    0   28G  0 lvm  /
+  +-ol-swap    249:1    0   21G  0 lvm  [SWAP]
+sdb              8:16   0  450G  0 disk
++-sdb1           8:17   0  160G  0 part
+  +-guo01-home 249:2    0  160G  0 lvm  /u01
+sr0             11:0    1 1024M  0 rom
+
+[root@oracledbhml ~]# fdisk -l
+Disk /dev/sdb: 483.2 GB, 483183820800 bytes, 943718400 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Disk identifier: 0x000d2fbb
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048   335544319   167771136   8e  Linux LVM
+
+Disk /dev/sda: 53.7 GB, 53687091200 bytes, 104857600 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Disk identifier: 0x0005a277
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1   *        2048     2099199     1048576   83  Linux
+/dev/sda2         2099200   104857599    51379200   8e  Linux LVM
+
+Disk /dev/mapper/ol-root: 30.1 GB, 30060576768 bytes, 58712064 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+
+Disk /dev/mapper/ol-swap: 22.5 GB, 22548578304 bytes, 44040192 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+
+Disk /dev/mapper/guo01-home: 171.8 GB, 171794497536 bytes, 335536128 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+[root@oracledbhml ~]# fdisk /dev/sdb
+Welcome to fdisk (util-linux 2.23.2).
+
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+
+Command (m for help): n
+Partition type:
+   p   primary (1 primary, 0 extended, 3 free)
+   e   extended
+Select (default p): p
+Partition number (2-4, default 2):
+First sector (335544320-943718399, default 335544320):
+Using default value 335544320
+Last sector, +sectors or +size{K,M,G} (335544320-943718399, default 943718399):
+Using default value 943718399
+Partition 2 of type Linux and of size 290 GiB is set
+
+Command (m for help): w
+The partition table has been altered!
+
+Calling ioctl() to re-read partition table.
+
+WARNING: Re-reading the partition table failed with error 16: Device or resource busy.
+The kernel still uses the old table. The new table will be used at
+the next reboot or after you run partprobe(8) or kpartx(8)
+Syncing disks.
+
+
+
+[root@oracledbhml ~]# fdisk -l
+
+Disk /dev/sdb: 483.2 GB, 483183820800 bytes, 943718400 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Disk identifier: 0x000d2fbb
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048   335544319   167771136   8e  Linux LVM
+/dev/sdb2       335544320   943718399   304087040   83  Linux
+
+Disk /dev/sda: 53.7 GB, 53687091200 bytes, 104857600 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Disk identifier: 0x0005a277
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1   *        2048     2099199     1048576   83  Linux
+/dev/sda2         2099200   104857599    51379200   8e  Linux LVM
+
+Disk /dev/mapper/ol-root: 30.1 GB, 30060576768 bytes, 58712064 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+
+Disk /dev/mapper/ol-swap: 22.5 GB, 22548578304 bytes, 44040192 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+
+Disk /dev/mapper/guo01-home: 171.8 GB, 171794497536 bytes, 335536128 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+[root@oracledbhml ~]# pvcreate /dev/sdb2
+  Device /dev/sdb2 not found.
+[root@oracledbhml ~]# fdisk /dev/sdb2
+fdisk: cannot open /dev/sdb2: No such file or directory
+[root@oracledbhml ~]# fdisk /dev/sdb
+Welcome to fdisk (util-linux 2.23.2).
+
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+
+Command (m for help): m
+Command action
+   a   toggle a bootable flag
+   b   edit bsd disklabel
+   c   toggle the dos compatibility flag
+   d   delete a partition
+   g   create a new empty GPT partition table
+   G   create an IRIX (SGI) partition table
+   l   list known partition types
+   m   print this menu
+   n   add a new partition
+   o   create a new empty DOS partition table
+   p   print the partition table
+   q   quit without saving changes
+   s   create a new empty Sun disklabel
+   t   change a partition's system id
+   u   change display/entry units
+   v   verify the partition table
+   w   write table to disk and exit
+   x   extra functionality (experts only)
+
+Command (m for help): x
+
+Expert command (m for help): m
+Command action
+   b   move beginning of data in a partition
+   c   change number of cylinders
+   d   print the raw data in the first sector
+   e   list extended partitions
+   f   fix partition order
+   g   create an IRIX (SGI) partition table
+   h   change number of heads
+   i   change the disk identifier
+   m   print this menu
+   p   print the partition table
+   q   quit without saving changes
+   r   return to main menu
+   s   change number of sectors/track
+   v   verify the partition table
+   w   write table to disk and exit
+
+Expert command (m for help): r
+
+Command (m for help): l
+
+ 0  Empty           24  NEC DOS         81  Minix / old Lin bf  Solaris
+ 1  FAT12           27  Hidden NTFS Win 82  Linux swap / So c1  DRDOS/sec (FAT-
+ 2  XENIX root      39  Plan 9          83  Linux           c4  DRDOS/sec (FAT-
+ 3  XENIX usr       3c  PartitionMagic  84  OS/2 hidden C:  c6  DRDOS/sec (FAT-
+ 4  FAT16 <32M      40  Venix 80286     85  Linux extended  c7  Syrinx
+ 5  Extended        41  PPC PReP Boot   86  NTFS volume set da  Non-FS data
+ 6  FAT16           42  SFS             87  NTFS volume set db  CP/M / CTOS / .
+ 7  HPFS/NTFS/exFAT 4d  QNX4.x          88  Linux plaintext de  Dell Utility
+ 8  AIX             4e  QNX4.x 2nd part 8e  Linux LVM       df  BootIt
+ 9  AIX bootable    4f  QNX4.x 3rd part 93  Amoeba          e1  DOS access
+ a  OS/2 Boot Manag 50  OnTrack DM      94  Amoeba BBT      e3  DOS R/O
+ b  W95 FAT32       51  OnTrack DM6 Aux 9f  BSD/OS          e4  SpeedStor
+ c  W95 FAT32 (LBA) 52  CP/M            a0  IBM Thinkpad hi eb  BeOS fs
+ e  W95 FAT16 (LBA) 53  OnTrack DM6 Aux a5  FreeBSD         ee  GPT
+ f  W95 Ext'd (LBA) 54  OnTrackDM6      a6  OpenBSD         ef  EFI (FAT-12/16/
+10  OPUS            55  EZ-Drive        a7  NeXTSTEP        f0  Linux/PA-RISC b
+11  Hidden FAT12    56  Golden Bow      a8  Darwin UFS      f1  SpeedStor
+12  Compaq diagnost 5c  Priam Edisk     a9  NetBSD          f4  SpeedStor
+14  Hidden FAT16 <3 61  SpeedStor       ab  Darwin boot     f2  DOS secondary
+16  Hidden FAT16    63  GNU HURD or Sys af  HFS / HFS+      fb  VMware VMFS
+17  Hidden HPFS/NTF 64  Novell Netware  b7  BSDI fs         fc  VMware VMKCORE
+18  AST SmartSleep  65  Novell Netware  b8  BSDI swap       fd  Linux raid auto
+1b  Hidden W95 FAT3 70  DiskSecure Mult bb  Boot Wizard hid fe  LANstep
+1c  Hidden W95 FAT3 75  PC/IX           be  Solaris boot    ff  BBT
+1e  Hidden W95 FAT1 80  Old Minix
+
+Command (m for help): t
+Partition number (1,2, default 2):
+Hex code (type L to list all codes): 8e
+Changed type of partition 'Linux' to 'Linux LVM'
+
+Command (m for help): w
+The partition table has been altered!
+
+Calling ioctl() to re-read partition table.
+
+WARNING: Re-reading the partition table failed with error 16: Device or resource busy.
+The kernel still uses the old table. The new table will be used at
+the next reboot or after you run partprobe(8) or kpartx(8)
+Syncing disks.
+[root@oracledbhml ~]# fdisk -l
+
+Disk /dev/sdb: 483.2 GB, 483183820800 bytes, 943718400 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Disk identifier: 0x000d2fbb
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048   335544319   167771136   8e  Linux LVM
+/dev/sdb2       335544320   943718399   304087040   8e  Linux LVM
+
+Disk /dev/sda: 53.7 GB, 53687091200 bytes, 104857600 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Disk identifier: 0x0005a277
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1   *        2048     2099199     1048576   83  Linux
+/dev/sda2         2099200   104857599    51379200   8e  Linux LVM
+
+Disk /dev/mapper/ol-root: 30.1 GB, 30060576768 bytes, 58712064 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+
+Disk /dev/mapper/ol-swap: 22.5 GB, 22548578304 bytes, 44040192 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+
+Disk /dev/mapper/guo01-home: 171.8 GB, 171794497536 bytes, 335536128 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+
+[root@oracledbhml ~]# partprobe /dev/sdb
+[root@oracledbhml ~]# pvcreate /dev/sdb2
+  Physical volume "/dev/sdb2" successfully created.
+[root@oracledbhml ~]# pvscan
+  PV /dev/sda2   VG ol              lvm2 [<49.00 GiB / 0    free]
+  PV /dev/sdb1   VG guo01           lvm2 [<160.00 GiB / 0    free]
+  PV /dev/sdb2                      lvm2 [290.00 GiB]
+  Total: 3 [498.99 GiB] / in use: 2 [208.99 GiB] / in no VG: 1 [290.00 GiB]
+[root@oracledbhml ~]# vgextend guo01 /dev/sdb2
+  Volume group "guo01" successfully extended
+  
+[root@oracledbhml ~]# pvscan
+  PV /dev/sda2   VG ol              lvm2 [<49.00 GiB / 0    free]
+  PV /dev/sdb1   VG guo01           lvm2 [<160.00 GiB / 0    free]
+  PV /dev/sdb2   VG guo01           lvm2 [<290.00 GiB / <290.00 GiB free]
+  Total: 3 [<498.99 GiB] / in use: 3 [<498.99 GiB] / in no VG: 0 [0   ]
+
+[root@oracledbhml ~]# lvextend -L +290G /dev/mapper/guo01-home
+  Insufficient free space: 74240 extents needed, but only 74239 available
+  
+[root@oracledbhml ~]# lvextend -L +289^C/dev/mapper/guo01-home
+
+[root@oracledbhml ~]# lvextend -L +296956M /dev/mapper/guo01-home
+  Size of logical volume guo01/home changed from <160.00 GiB (40959 extents) to 449.99 GiB (115198 extents).
+  Logical volume guo01/home successfully resized.
+  
+[root@oracledbhml ~]# vgdisplay
+  --- Volume group ---
+  VG Name               ol
+  System ID
+  Format                lvm2
+  Metadata Areas        1
+  Metadata Sequence No  3
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                2
+  Open LV               2
+  Max PV                0
+  Cur PV                1
+  Act PV                1
+  VG Size               <49.00 GiB
+  PE Size               4.00 MiB
+  Total PE              12543
+  Alloc PE / Size       12543 / <49.00 GiB
+  Free  PE / Size       0 / 0
+  VG UUID               SybFDb-FvJy-Oe2c-5CUf-uoT8-L3Ub-xy33gu
+
+  --- Volume group ---
+  VG Name               guo01
+  System ID
+  Format                lvm2
+  Metadata Areas        2
+  Metadata Sequence No  4
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                1
+  Open LV               1
+  Max PV                0
+  Cur PV                2
+  Act PV                2
+  VG Size               449.99 GiB
+  PE Size               4.00 MiB
+  Total PE              115198
+  Alloc PE / Size       115198 / 449.99 GiB
+  Free  PE / Size       0 / 0
+  VG UUID               jRDZJb-u4l7-F5pb-pIDV-Egr7-Cuf8-MKaIeY
+
+[root@oracledbhml ~]# resize
+resize2fs   resizecons  resizepart
+[root@oracledbhml ~]# resize2fs /dev/mapper/guo01-home
+resize2fs 1.42.9 (28-Dec-2013)
+resize2fs: Bad magic number in super-block while trying to open /dev/mapper/guo01-home
+Couldn't find valid filesystem superblock.
+[root@oracledbhml ~]# xfs_growfs /dev/mapper/guo01-home
+meta-data=/dev/mapper/guo01-home isize=256    agcount=4, agsize=10485504 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=0        finobt=0 spinodes=0
+data     =                       bsize=4096   blocks=41942016, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0 ftype=1
+log      =internal               bsize=4096   blocks=20479, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+data blocks changed from 41942016 to 117962752
+[root@oracledbhml ~]# df -h
+Filesystem              Size  Used Avail Use% Mounted on
+devtmpfs                7.7G     0  7.7G   0% /dev
+tmpfs                   7.8G     0  7.8G   0% /dev/shm
+tmpfs                   7.8G   50M  7.7G   1% /run
+tmpfs                   7.8G     0  7.8G   0% /sys/fs/cgroup
+/dev/mapper/ol-root      28G  7.1G   21G  26% /
+/dev/sda1              1014M  172M  843M  17% /boot
+/dev/mapper/guo01-home  450G  133G  318G  30% /u01
+tmpfs                   1.6G     0  1.6G   0% /run/user/54321
+tmpfs                   1.6G     0  1.6G   0% /run/user/1000
+tmpfs                   1.6G     0  1.6G   0% /run/user/1001
