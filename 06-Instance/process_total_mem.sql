@@ -1,1 +1,0 @@
-select round(sum(pga_alloc_mem)/1024/1024/1024,2) mem_total_gb from v$process;

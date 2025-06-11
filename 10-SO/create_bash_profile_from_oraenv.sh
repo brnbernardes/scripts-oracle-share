@@ -1,1 +1,0 @@
-for L in $(env | grep ORA); do  echo "export $L"; done; echo 'export PATH=$ORACLE_HOME/bin:$PATH'; echo 'export LD_LIBRARY_PATH=$ORACLE_HOME/lib'
